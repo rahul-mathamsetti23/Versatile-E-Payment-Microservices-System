@@ -1,0 +1,138 @@
+version: '3'
+
+services:
+
+  # MySQL for notification-service
+  notificationdb:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: notificationdb
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+    volumes:
+      - notificationdb-data:/var/lib/mysql
+
+  # MySQL for transaction-service
+  txndb:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: txndb
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+    volumes:
+      - txndb-data:/var/lib/mysql
+
+  # MySQL for user-service
+  userdb:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: userdb
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+    volumes:
+      - userdb-data:/var/lib/mysql
+
+  # MySQL for wallet-service
+  walletdb:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: walletdb
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+    volumes:
+      - walletdb-data:/var/lib/mysql
+
+  # Kafka and Zookeeper services
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-kafka
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9092,OUTSIDE://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+
+  # Individual microservices
+  notification-service:
+    image: anudeep2804/notificationapp:v1.0
+    environment:
+      SERVER_PORT: 4000
+      SPRING_DATASOURCE_URL: jdbc:mysql://notificationdb:3306/notificationdb?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "4000:4000"
+    volumes:
+      - notification-logs:/app/logs
+    depends_on:
+      - notificationdb
+      - kafka
+
+  transaction-service:
+    image: anudeep2804/transactionapp:v1.0
+    environment:
+      SERVER_PORT: 5001
+      SPRING_DATASOURCE_URL: jdbc:mysql://txndb:3306/txndb?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: debug
+    ports:
+      - "5001:5001"
+    volumes:
+      - transaction-logs:/app/logs
+    depends_on:
+      - txndb
+      - kafka
+
+  user-service:
+    image: anudeep2804/userserviceapp:v1.0
+    environment:
+      SERVER_PORT: 6001
+      SPRING_DATASOURCE_URL: jdbc:mysql://userdb:3306/userdb?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "6001:6001"
+    volumes:
+      - user-logs:/app/logs
+    depends_on:
+      - userdb
+      - kafka
+
+  wallet-service:
+    image: anudeep2804/walletserviceapp:v1.0
+    environment:
+      SERVER_PORT: 7001
+      SPRING_DATASOURCE_URL: jdbc:mysql://walletdb:3306/walletdb?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "7001:7001"
+    volumes:
+      - wallet-logs:/app/logs
+    depends_on:
+      - walletdb
+      - kafka
+
+volumes:
+  notificationdb-data:
+  txndb-data:
+  userdb-data:
+  walletdb-data:
+  notification-logs:
+  transaction-logs:
+  user-logs:
+  wallet-logs:
