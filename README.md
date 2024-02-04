@@ -1,17 +1,17 @@
-# E-Wallet System
+# E-Payment System
 
 A comprehensive e-wallet system that enables users to effortlessly transfer amounts, view their balance, recent transactions, and manage account settings. Developed with a microservices architecture and integrated with modern technologies ensuring responsive and secure user interactions.
 
 <img width="803" alt="image" src="https://github.com/anudeep2804/E_Wallet_Microservice_Application/assets/68229062/f2049546-4f6c-47d8-850b-e706ea7509b6">
 
-## 🚀 Features
+## Features
 
 - **P2P Transfers**: Allow users to send money to other registered users.
 - **Account Management**: Fetch balance, view recent transactions, and edit account settings.
 - **Email Notifications**: Automated emails upon every transaction event.
 - **Admin Functionalities**: Endpoints for admins to fetch user details.
 
-## 🛠️ Microservices
+## Microservices
 
 1. **User Service**: Handle user creation, updates, and queries.
 2. **Transaction Service**: Oversee transaction initiation and processing.
@@ -20,7 +20,7 @@ A comprehensive e-wallet system that enables users to effortlessly transfer amou
 
 > Note: All services are interconnected efficiently using Kafka.
 
-## 🔧 Technologies
+## Technologies
 
 - **Spring Boot**: Backend microservices framework.
 - **Kafka**: Real-time data streaming for inter-service communication.
@@ -29,7 +29,7 @@ A comprehensive e-wallet system that enables users to effortlessly transfer amou
 - **JPA**: Data management and persistence.
 - **Databases**: Independent databases for each microservice.
 
-## 📌 Controller Insights
+## Controller Insights
 
 ### Transaction Controller (`TxnController`)
 
@@ -57,7 +57,7 @@ A comprehensive e-wallet system that enables users to effortlessly transfer amou
   - **Method**: GET
   - **Description**: Retrieve specific user details using their ID (admin only).
 
-## 📥 Setup & Installation
+## Setup & Installation
 
 1. **Clone**: Download the repository.
 2. **Databases**: Configure individual databases for each service.
