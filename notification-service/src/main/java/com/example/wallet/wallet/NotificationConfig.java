@@ -40,7 +40,7 @@ public class NotificationConfig {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setPort(587);
-        javaMailSender.setUsername("ewalletbyanudep33@gmail.com");
+        javaMailSender.setUsername("ewalletbyrahul99@gmail.com");
         javaMailSender.setPassword("eWallet@123");
 
 
