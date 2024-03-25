@@ -26,7 +26,7 @@ public class NotificationService {
         String emailMsg = (String) data.get("msg");
 
 
-        simpleMailMessage.setFrom("ewalletbyanudep33@gmail.com");
+        simpleMailMessage.setFrom("ewalletbyrahul99@gmail.com");
         simpleMailMessage.setTo(email);
         simpleMailMessage.setText(emailMsg);
         simpleMailMessage.setSubject("E wallet Payment Updates");
